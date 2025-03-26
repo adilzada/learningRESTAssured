@@ -6,22 +6,15 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class GetBookingByIDTest {
+public class GetBookingByIDTest extends BaseTest {
 
     @Test
-    public void getBookingByID(){
+    public void getBookingByIDTest(){
 
-//        given()
-//                .when()
-//                .and()
-//                .get("https://restful-booker.herokuapp.com/booking/29")
-//                .then()
-//                .log().all()
-//                .statusCode(200);
 
         Response response= given()
                 .when()
-                .get("https://restful-booker.herokuapp.com/booking/742");
+                .get("https://restful-booker.herokuapp.com/booking/"+getID());
 
         response
                 .then()
@@ -33,11 +26,18 @@ public class GetBookingByIDTest {
         String lastname=response.jsonPath().getJsonObject("lastname");
         int totalprice=response.jsonPath().getJsonObject("totalprice");
 
-        Assertions.assertEquals("John",firstname);
-        Assertions.assertEquals(111,totalprice);
-        Assertions.assertEquals("Smith",lastname);
+        Assertions.assertEquals("mosu",firstname);
+        Assertions.assertEquals(100,totalprice);
+        Assertions.assertEquals("Mosuyev",lastname);
 
 
 
     }
 }
+//        given()
+//                .when()
+//                .and()
+//                .get("https://restful-booker.herokuapp.com/booking/29")
+//                .then()
+//                .log().all()
+//                .statusCode(200);
