@@ -8,6 +8,7 @@ import static io.restassured.RestAssured.given;
 
 public class BaseTest {
 
+int bookingID=getID();
     protected int getID() {
         Response response = createBooking();
         // ID-nin cavabdan alınması
@@ -19,7 +20,7 @@ public class BaseTest {
         Response response = given()
                 .when()
                 .contentType(ContentType.JSON)
-                .body(bookingObj())
+                .body(bookingObj("mosu","mosuyev",200))
                 .post("https://restful-booker.herokuapp.com/booking");
 
         response.prettyPrint();
@@ -28,11 +29,11 @@ public class BaseTest {
                 .statusCode(200);
         return response;
     }
-    protected String bookingObj(){
+    protected String bookingObj(String firstname, String lastname, int totalPrice){
         JSONObject body=new JSONObject();
-        body.put("firstname","mosu");
-        body.put("lastname","Mosuyev");
-        body.put("totalprice",100);
+        body.put("firstname",firstname);
+        body.put("lastname",lastname);
+        body.put("totalprice",totalPrice);
         body.put("depositpaid",false);
 
         JSONObject bookingdates=new JSONObject();
@@ -44,6 +45,23 @@ public class BaseTest {
         return body.toString();
 
 
+    }
+    String token=createToken();
+    protected String createToken(){
+        JSONObject body=new JSONObject();
+        body.put("username","admin");
+        body.put("password","password123");
+
+        Response response=given()
+                .contentType(ContentType.JSON)
+                .when()
+                .body(body.toString())
+                .log().all()
+                .post("https://restful-booker.herokuapp.com/auth");
+
+        response.prettyPrint();
+
+        return response.jsonPath().getJsonObject("token");
     }
 
 }
