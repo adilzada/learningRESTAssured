@@ -1,12 +1,30 @@
 package com.booking;
 
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 import static io.restassured.RestAssured.given;
+import static java.util.Arrays.*;
 
 public class BaseTest {
+RequestSpecification spec;
+    public void setup(){
+        spec=new RequestSpecBuilder()
+                .setBaseUri("https://restful-booker.herokuapp.com/")
+                .addFilters(Arrays.asList(new RequestLoggingFilter(), new ResponseLoggingFilter()))
+                .build();
+
+    }
+
+
 
 int bookingID=getID();
     protected int getID() {
